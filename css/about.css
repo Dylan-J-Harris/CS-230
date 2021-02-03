@@ -13,7 +13,23 @@ p{
 }
 
 .card1{
-    color:crimson
+    color:crimson;
+    font-style: italic;
+    
+}
+.card2{
+    color:darkgreen;
+    font-style: normal;
+
+}
+.card3{
+    color:darkmagenta;
+    font-style:oblique;
+
+}
+.card4{
+    color:darkorange;
+    font-style:inherit;
 }
 
 img{
