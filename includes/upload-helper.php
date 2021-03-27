@@ -1,51 +1,54 @@
-<?php
+<?php 
 
 require 'dbhandler.php';
 session_start();
 
 define('KB', 1024);
-define('MB',1048576);
+define('MB', 1048576);
 
-if (isset($_POST['prof-submit'])){
+if (isset($_POST['prof-submit'])) {
 
     $uname = $_SESSION['uname'];
     $file = $_FILES['prof-image'];
     $file_name = $file['name'];
-    $file_temp_name = $file['tmp_name'];
+    $file_tmp_name = $file['tmp_name'];
     $file_error = $file['error'];
     $file_size = $file['size'];
 
-    $ext=strtolower(pathinfo($file_name,PATHINFO_EXTENSION));
+    $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
-    $allowed = array('jpg','jpeg','png','svg');
+    $allowed = array('jpg','jpeg', 'png', 'svg');
 
-    if($file_error != 0){
+    if ($file_error !==0) {
         header("Location: ../profile.php?error=UploadError");
-        exit(); 
+        exit();
     }
 
-    if(!in_array($ext, $allowed)){
-        header("Location:../profile.php?error=InvalidType");
+    if (!in_array($ext, $allowed)) {
+        header("Location: ../profile.php?error=InvalidType");
         exit();
     }
-    if($file_size > 4*MB){
-        header("Location:../profile.php?error=FileSizeExceeded");
+    if ($file_size > 4*MB){
+        header("Location: ../profile.php?error=FileSizeExceeded");
         exit();
     }
-    else{
+    
+    else {
         $new_name = uniqid('',true).".".$ext;
-        $destination = '../profiles/.'.$new_name;
-        $sql = "UPDATE profiles SET profpic='$destination' WHERE uname = '$uname'";
 
-        mysqli_query($conn,$sql);
+        $destination = '../profiles/'.$new_name;
+
+        $sql = "UPDATE profiles SET profpic='$destination' WHERE uname='$uname'";
+
+        mysqli_query($conn, $sql);
 
         move_uploaded_file($file_tmp_name, $destination);
-        header("Location:../profile.php?Success=UploadWin");
+        header("Location: ../profile.php?success=UploadWin");
         exit();
+
     }
 
-    echo print_r($file);
-
+    
 }else{
     header("Location: ../profile.php");
     exit();
